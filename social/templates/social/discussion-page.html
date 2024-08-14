@@ -1,0 +1,92 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'social/css/discussion-page.css' %}"
+/>
+<style></style>
+
+<div class="block_content">
+  <h2 class="header_text">{{ discussion.title }}</h2>
+  {% if discussion.status == 0 %}
+  <div>
+    Статус:
+    <p class="status">Обсуждение закрыто</p>
+  </div>
+  {% else %}
+  <div class="status_block">
+    Статус:
+    <p class="status">Обсуждение открыто</p>
+  </div>
+  {% endif %}
+  <div class="status_block">
+    Описание:
+    <p class="status">{{ discussion.description }}</p>
+  </div>
+
+  {% if discussion.tasks.all.count > 0 %}
+  <p class="tasks">Задачи:</p>
+  <ul class="list_tasks">
+    {% for task in discussion.tasks.all %}
+    <div>
+      <li class="current_task">
+        <p>
+          <a href="{% url 'todo:task_page' task.slug %}">{{ task.title }}</a>
+        </p>
+        {% if task.status == 0 %}
+        <p style="color: green">Задача закрыта</p>
+        {% else %}
+        <p style="color: grey">Задача открыта</p>
+        {% endif %}
+        <button type="button" class="moreButton">
+          <a href="{% url 'todo:task_page' task.slug %}">Подробнее</a>
+        </button>
+      </li>
+    </div>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="tasks">Задач по обсуждению нет</p>
+  {% endif %}
+
+  <div class="status_block">
+    Время создания:
+    <p class="status">{{ discussion.time_create }}</p>
+  </div>
+  <div class="status_block">
+    Автор:
+    <p class="status">{{discussion.author}}</p>
+  </div>
+  <button class="moreButton">
+    <a href="{% url 'delete_discussion' discussion.slug %}"
+      >Удалить обсуждение</a
+    >
+  </button>
+  <button class="moreButton">
+    <a href="{% url 'update_discussion' discussion.slug %}"
+      >Редактировать обсуждение</a
+    >
+  </button>
+  <button class="moreButton">
+    <a href="{% url 'add_discussion_task' discussion.slug %}"
+      >Добавить задачу</a
+    >
+  </button>
+
+  {% if discussion.comments.count %}
+  <div class="status_block">
+    Комментарии
+    <h2 class="status">({{discussion.comments.count}})</h2>
+  </div>
+  {% else %}
+  <h2>Добавьте комментарий</h2>
+  {% endif %}
+  <form method="POST" id="myForm">
+    {% csrf_token %} {{ form }}
+    <button type="submit" class="moreButton">Добавить</button>
+  </form>
+  {% include 'social/comment.html' %}
+</div>
+
+{% endblock %}

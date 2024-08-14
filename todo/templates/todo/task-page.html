@@ -1,0 +1,103 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'social/css/task-page.css' %}"
+/>
+
+<div class="block_content">
+  <h2 class="header_text">Задача: {{task.title}}</h2>
+  <div class="status_block">
+    Описание:
+    <p class="status">{{task.description}}</p>
+  </div>
+  <div class="status_block">
+    Автор:
+    <p class="status">{{task.author}}</p>
+  </div>
+  <div class="status_block">
+    Дата создания задачи:
+    <p class="status">{{task.time_create}}</p>
+  </div>
+  {% if task.status == 0 %}
+  <div class="status_block">
+    Статус:
+    <p class="status">Задача закрыта</p>
+  </div>
+  {% else %}
+  <div class="status_block">
+    Статус:
+    <p class="status" style="color: grey">Задача открыта</p>
+  </div>
+  {% endif %}
+  <div class="status_block">
+    Дедлайн до
+    <p class="status" style="color: red">{{task.deadline}}</p>
+  </div>
+  {% if task.status == 1 %}
+  <button type="submit" class="moreButton">
+    <a href="{% url 'todo:task_toggle_complete' task.slug %}">Закрыть</a>
+  </button>
+  {% else %}
+  <button type="submit" class="moreButton">
+    <a href="{% url 'todo:task_toggle_complete' task.slug %}">Открыть</a>
+  </button>
+  {% endif %}
+
+  <button class="moreButton">
+    <a href="{% url 'todo:delete_task' task.slug %}">Удалить задачу</a>
+  </button>
+  <button class="moreButton">
+    <a href="{% url 'todo:update_task' task.slug %}">Редактировать задачу</a>
+  </button>
+
+  <h2 style="margin-bottom: 20px">Подзадачи:</h2>
+
+  <button class="moreButton">
+    <a href="{% url 'todo:add_subtask' task.slug %}">Добавить подзадачу</a>
+  </button>
+
+  <ul>
+    {% for subtask in subtasks %}
+    <li>
+      <p>Название подзадачи: {{subtask.title}}</p>
+      <p>Описание:{{subtask.description}}</p>
+      <p>Отвественный: {{subtask.responsible}}</p>
+      <p>Время создания: {{subtask.time_create}}</p>
+
+      {% if subtask.status == 0 %}
+      <p style="color: green">Статус: Задача закрыта</p>
+      {% else %}
+      <p style="color: grey">Статус: Задача открыта</p>
+      {% endif %}
+      <p style="color: red">Дедлайн до {{subtask.deadline}}</p>
+
+      {% if task.status == 1 %}
+      <button type="submit" class="moreButton">
+        <a href="{% url 'todo:subtask_toggle_complete' subtask.slug %}"
+          >Закрыть</a
+        >
+      </button>
+      {% else %}
+      <button type="submit" class="moreButton">
+        <a href="{% url 'todo:subtask_toggle_complete' subtask.slug %}"
+          >Открыть</a
+        >
+      </button>
+      {% endif %}
+
+      <button class="moreButton">
+        <a href="{% url 'todo:delete_subtask' subtask.slug %}">Удалить</a>
+      </button>
+      <button class="moreButton">
+        <a href="{% url 'todo:update_subtask' subtask.slug %}"
+          >Редактировать подзадачу</a
+        >
+      </button>
+    </li>
+
+    {% endfor %}
+  </ul>
+</div>
+<style></style>
+{% endblock %}

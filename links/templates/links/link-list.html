@@ -1,0 +1,175 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'social/css/link-list.css' %}"
+/>
+
+<button class="moreButton">
+  <a href="{% url 'links:add_link' %}">Добавить ссылку</a>
+</button>
+
+<div class="names_list">
+  <span class="name">Наименование</span>
+  <span class="name details">Детали</span>
+  <span class="name actions">Действия</span>
+</div>
+{% for l in links %}
+<ul>
+  {% if l.choice == 'Google' %}
+  <li class="current_link">
+    <p>
+      <span>
+        <a href="{{ l.link }}">{{ l.title }}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/google-icon.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}
+      <button>
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'Yandex' %}
+  <li class="current_link">
+    <p>
+      <span>
+        <a href="{{ l.link }}">{{ l.title}}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/yandex-icon.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'Dropbox' %}
+  <li class="current_link">
+    <p>
+      <span class="">
+        <a href="{{ l.link }}">{{l.title}}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/dropbox-Icon.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'GOOGLE_DISK' %}
+  <li class="current_link">
+    <p>
+      <span class="">
+        <a href="{{ l.link }}">{{ l.title }}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/google-drive-icon.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'YANDEX_DISK' %}
+  <li class="current_link">
+    <p>
+      <span class="">
+        <a href="{{ l.link }}">{{ l.title }}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/yandex-disk.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'MAIL_CLOUD' %}
+  <li class="current_link">
+    <p>
+      <span class="">
+        <a href="{{ l.link }}">{{ l.title }}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/mail-cloud.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'SBERDISK' %}
+  <li class="current_link">
+    <p>
+      <span class="">
+        <a href="{{ l.link }}">{{ l.title }}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/sber-disk.png' %}"
+        />
+      </span>
+      {{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'Telegram' %}
+  <li class="current_link">
+    <p>
+      <span class="">
+        <a href="{{ l.link }}">{{ l.title}}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/telegram_icon.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% elif l.choice == 'VK' %}
+  <li class="current_link">
+    <p>
+      <span class="">
+        <a href="{{ l.link }}">{{ l.title}}</a
+        ><img
+          style="width: 25px; height: 25px; margin-left: 10px"
+          src="{% static 'social/images/vk-icon.png' %}"
+        />
+      </span>
+      Автор ссылки:{{ l.author|default_if_none:"Автор не указан" }}<button
+        class="moreButton"
+      >
+        <a href="{% url 'links:delete_link' l.id %}">Удалить ссылку</a>
+      </button>
+    </p>
+  </li>
+  {% endif %}
+</ul>
+
+{% endfor %}<style></style>
+{% endblock %}

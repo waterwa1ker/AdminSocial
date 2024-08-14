@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'social/css/add-discussion.css' %}"
+/>
+
+<h1 style="margin: 0 0 20px 20px">Редактировать задачу</h1>
+<form method="POST">
+  {% csrf_token %} {{ form.as_p }}
+  <div class="form-error">{{ f.errors }}</div>
+  <button type="submit">Добавить</button>
+</form>
+{% endblock %}

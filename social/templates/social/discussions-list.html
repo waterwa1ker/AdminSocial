@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'social/css/discussions-list.css' %}"
+/>
+<div class="current_page">
+  <div>
+    <h3 class="title">Обсуждения</h3>
+    <div class="current_page_buttons_list">
+      <form method="POST" action="{% url 'search' %}" class="post_form">
+        {% csrf_token %}
+        <input
+          type="search"
+          placeholder="Введите название..."
+          name="q"
+          class="search_input"
+        />
+        <button type="submit" class="current_button">Поиск</button>
+      </form>
+      <button class="add_button">
+        <a href="{% url 'add_discussion' %}">Добавить обсуждение</a>
+      </button>
+    </div>
+  </div>
+  <div class="names_list">
+    <span class="name">Наименование</span>
+    <span class="name status">Статус</span>
+    <span class="name description">Описание</span>
+    <span class="name">Кол-во задач</span>
+    <span class="name details">Детали</span>
+    <span class="name actions">Действия</span>
+  </div>
+  <ul class="discussions_list">
+    {% for d in discussions %}
+    <li class="discussions_info">
+      <h2>{{ d.title }}</h2>
+
+      {% if d.status == 0 %}
+
+      <div style="color: red">закрыто</div>
+      {% else %}
+      <div style="color: green"><p>открыто</p></div>
+      {% endif %}
+
+      <p class="info">{{ d.description }}</p>
+      <p class="tasks info">Количество задач: {{ d.tasks.all|length }}</p>
+      <p class="data info">
+        Время создания: {{ d.time_create }} Автор : {{d.author}}
+      </p>
+      <button class="moreButton" type="button" data-mdb-ripple-init>
+        <a style="cursor: pointer" href="{{ d.get_absolute_url }}">
+          Подробнее
+        </a>
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if discussions.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ discussions.previous_page_number }}"
+          >Предыдущая страница</a
+        >
+      </li>
+      {% endif %} {% for p in discussions.paginator.page_range %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+      </li>
+      {% endfor %} {% if discussions.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ discussions.next_page_number }}"
+          >Следующая страница</a
+        >
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+{% endblock %}
